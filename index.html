@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Choni!</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Nanum+Pen+Script&family=Manrope:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a sealed envelope on a velvet stage opens into a concert program — letter, setlist (photos), encore (videos), and a playable solo. Single committed night-stage look. */
+:root {
+  --velvet: #24112b;
+  --velvet-2: #351a3e;
+  --velvet-3: #4a2754;
+  --gold: #e9b95f;
+  --gold-soft: #f3d79d;
+  --wax: #a8273f;
+  --wax-dark: #7a1a2d;
+  --paper: #fdf3ef;
+  --paper-line: #ecd9d4;
+  --ink: #3a2448;
+  --text: #f5eaf3;
+  --muted: #bda7c4;
+  --env: #e7c9c4;
+  --env-shade: #d8b2ad;
+  --env-flap: #dcb8b2;
+  --env-in: #b78f97;
+  --key: #fbf6f8;
+  --key-edge: #c9b3cc;
+
+  --f-display: "Gloock", "Bodoni 72", "Didot", Georgia, serif;
+  --f-hand: "Nanum Pen Script", "Bradley Hand", "Segoe Print", cursive;
+  --f-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--velvet);
+  background-image:
+    radial-gradient(60rem 36rem at 50% -8rem, rgba(233,185,95,.18), transparent 70%),
+    radial-gradient(40rem 30rem at 0% 40%, rgba(168,39,63,.16), transparent 70%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.6;
+}
+body.locked { overflow: hidden; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 56px 72px;
+  display: grid;
+  gap: 88px;
+}
+
+/* ---------- Envelope overlay ---------- */
+.stage {
+  position: fixed; inset: 0; z-index: 50;
+  display: grid; place-items: center; align-content: center; gap: 28px;
+  background: var(--velvet);
+  background-image: radial-gradient(34rem 30rem at 50% 30%, rgba(233,185,95,.22), transparent 70%);
+  padding: calc(24px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  transition: opacity .8s ease;
+}
+.stage.fade { opacity: 0; pointer-events: none; }
+.stage-kicker {
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold-soft); margin: 0; text-align: center;
+}
+.env {
+  position: relative;
+  width: min(86vw, 440px);
+  max-width: 100%;
+  aspect-ratio: 3 / 2;
+  perspective: 1200px;
+  cursor: pointer;
+  margin-top: 60px;
+  filter: drop-shadow(0 24px 40px rgba(0,0,0,.45));
+}
+.env-back { position: absolute; inset: 0; background: var(--env-in); border-radius: 8px; }
+.env-letter {
+  position: absolute; left: 6%; right: 6%; top: 7%; height: 86%;
+  background: var(--paper);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 27px, var(--paper-line) 27px 28px);
+  border-radius: 4px; z-index: 2;
+  padding: 14px 18px;
+  color: var(--ink);
+  transition: transform 1s cubic-bezier(.2,.8,.2,1) .55s;
+}
+.env-letter span { font-family: var(--f-hand); font-size: 30px; line-height: 1; }
+.env-front {
+  position: absolute; inset: 0; z-index: 3; border-radius: 8px;
+  background: var(--env);
+  clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);
+}
+.env-front::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--env-shade);
+  clip-path: polygon(0 100%, 50% 52%, 100% 100%);
+}
+.env-to {
+  position: absolute; left: 0; right: 0; bottom: 9%; z-index: 4;
+  text-align: center; font-family: var(--f-hand); font-size: clamp(26px, 7vw, 34px); color: var(--ink);
+  pointer-events: none;
+}
+.env-flap {
+  position: absolute; left: 0; right: 0; top: 0; height: 60%; z-index: 5;
+  background: var(--env-flap);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform .65s ease-in-out, z-index 0s linear .33s;
+}
+.seal {
+  position: absolute; left: 50%; top: 60%; z-index: 6;
+  width: 72px; height: 72px; border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 0; cursor: pointer;
+  background: radial-gradient(circle at 35% 30%, #c6384f, var(--wax) 55%, var(--wax-dark));
+  box-shadow: 0 0 0 5px rgba(168,39,63,.35), 0 6px 14px rgba(0,0,0,.35), inset 0 -3px 6px rgba(0,0,0,.25);
+  color: var(--gold-soft); font-family: var(--f-display); font-size: 34px; line-height: 72px;
+  transition: transform .35s ease, opacity .35s ease;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+.seal:hover { transform: translate(-50%, -50%) scale(1.06); }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 5px rgba(168,39,63,.35), 0 6px 14px rgba(0,0,0,.35), inset 0 -3px 6px rgba(0,0,0,.25); }
+  50% { box-shadow: 0 0 0 12px rgba(233,185,95,.12), 0 6px 14px rgba(0,0,0,.35), inset 0 -3px 6px rgba(0,0,0,.25); }
+}
+.env.open .seal { opacity: 0; transform: translate(-50%, -50%) scale(.5); animation: none; }
+.env.open .env-flap { transform: rotateX(180deg); z-index: 1; }
+.env.open .env-letter { transform: translateY(-62%); }
+.stage-hint { margin: 0; color: var(--muted); font-size: 14px; text-align: center; }
+
+/* ---------- Hero ---------- */
+.hero { display: grid; gap: 18px; text-align: center; justify-items: center; }
+.eyebrow {
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold-soft); margin: 0;
+}
+.staff {
+  position: relative; width: 100%;
+  padding-block: 10px;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 15px, rgba(233,185,95,.35) 15px 16px);
+  background-size: 100% 80px; background-repeat: no-repeat; background-position: center;
+}
+.hero h1 {
+  font-family: var(--f-display); font-weight: 400;
+  font-size: clamp(48px, 11vw, 112px); line-height: .95; letter-spacing: -.01em;
+  margin: 0; text-wrap: balance;
+  text-shadow: 0 2px 30px rgba(36,17,43,.9);
+}
+.hero h1 em { font-style: normal; color: var(--gold); }
+.hero p.sub { margin: 0; max-width: 34ch; color: var(--muted); font-size: 17px; }
+.program {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px;
+  list-style: none; padding: 0; margin: 6px 0 0;
+  font-family: var(--f-mono); font-size: 13px;
+}
+.program a { color: var(--text); text-decoration: none; border-bottom: 1px solid rgba(233,185,95,.4); padding-bottom: 2px; }
+.program a:hover { color: var(--gold); }
+
+/* ---------- Section heads ---------- */
+.sec-head { display: grid; gap: 6px; margin-bottom: 28px; }
+.sec-head h2 {
+  font-family: var(--f-display); font-weight: 400; font-size: clamp(32px, 6vw, 48px);
+  line-height: 1.05; margin: 0; text-wrap: balance;
+}
+.sec-head p { margin: 0; color: var(--muted); max-width: 58ch; }
+
+/* ---------- Letter ---------- */
+.letter {
+  position: relative;
+  max-width: 680px; width: 100%; margin: 0 auto;
+  background: var(--paper);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 39px, var(--paper-line) 39px 40px);
+  background-position: 0 30px;
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 44px clamp(22px, 6vw, 56px) 48px;
+  box-shadow: 0 30px 60px rgba(0,0,0,.4);
+  transform: rotate(-.6deg);
+}
+.letter::before {
+  content: ""; position: absolute; left: clamp(14px, 4vw, 36px); top: 0; bottom: 0; width: 1px;
+  background: rgba(168,39,63,.25);
+}
+.letter h3 { font-family: var(--f-hand); font-weight: 400; font-size: 44px; line-height: 40px; margin: 0 0 0; }
+.letter p { font-family: var(--f-hand); font-size: 29px; line-height: 40px; margin: 0; }
+.letter .body { display: grid; gap: 40px; margin-top: 40px; }
+.letter .sign { margin-top: 40px; text-align: right; }
+.letter .stamp {
+  position: absolute; right: 18px; top: -22px;
+  width: 64px; height: 64px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #c6384f, var(--wax) 55%, var(--wax-dark));
+  color: var(--gold-soft); display: grid; place-items: center;
+  font-family: var(--f-display); font-size: 28px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.3);
+  transform: rotate(8deg);
+}
+
+/* ---------- Setlist (photos) ---------- */
+.setlist {
+  display: grid; gap: 28px 22px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  list-style: none; padding: 0; margin: 0;
+}
+.polaroid {
+  background: var(--key); color: var(--ink);
+  padding: 12px 12px 16px; border-radius: 3px;
+  box-shadow: 0 18px 32px rgba(0,0,0,.35);
+  transform: rotate(var(--tilt, -1.2deg));
+  transition: transform .3s ease;
+  display: grid; gap: 10px;
+}
+.polaroid:nth-child(even) { --tilt: 1.4deg; }
+.polaroid:nth-child(3n) { --tilt: -.4deg; }
+.polaroid:hover { transform: rotate(0) translateY(-4px); }
+.ph {
+  aspect-ratio: 4 / 5; max-width: 100%; width: 100%;
+  border-radius: 2px; overflow: hidden;
+  background: linear-gradient(160deg, var(--velvet-3), var(--velvet-2) 60%, var(--wax-dark));
+  display: grid; place-items: center; text-align: center;
+  color: var(--gold-soft);
+}
+.ph > * { grid-area: 1 / 1; }
+.ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph .empty { display: grid; gap: 6px; padding: 16px; font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; }
+.ph .empty b { font-family: var(--f-display); font-weight: 400; font-size: 40px; color: var(--gold); line-height: 1; }
+.track { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #8a6f8f; }
+.cap { font-family: var(--f-hand); font-size: 26px; line-height: 1.05; margin: 0; }
+
+/* ---------- Encore (videos) ---------- */
+.encore { display: grid; justify-content: center; }
+.vid { width: min(100%, 360px); text-align: center; }
+.vid { display: grid; gap: 10px; min-width: 0; }
+.vid-frame {
+  aspect-ratio: 9 / 16; max-width: 100%; width: 100%;
+  border-radius: 10px; overflow: hidden;
+  background: linear-gradient(135deg, var(--velvet-3), #160a1b);
+  border: 1px solid rgba(233,185,95,.25);
+  display: grid; place-items: center; text-align: center; color: var(--gold-soft);
+}
+.vid-frame > * { grid-area: 1 / 1; }
+.vid-frame video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
+.vid-frame .empty { display: grid; gap: 8px; justify-items: center; font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; padding: 16px; }
+.play-glyph { width: 54px; height: 54px; border-radius: 50%; border: 1.5px solid var(--gold); display: grid; place-items: center; }
+.play-glyph::after { content: ""; border-left: 16px solid var(--gold); border-top: 10px solid transparent; border-bottom: 10px solid transparent; margin-left: 4px; }
+.vid h3 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: 22px; }
+.vid p { margin: 0; color: var(--muted); font-size: 14px; }
+
+/* ---------- Solo (karaoke + keys) ---------- */
+.solo {
+  background: linear-gradient(180deg, var(--velvet-2), var(--velvet));
+  border: 1px solid rgba(233,185,95,.22);
+  border-radius: 18px;
+  padding: clamp(22px, 5vw, 44px);
+  display: grid; gap: 26px;
+}
+.solo .sec-head { margin: 0; }
+.marking { font-family: var(--f-mono); font-size: 12px; color: var(--gold-soft); letter-spacing: .08em; }
+.lyrics { display: grid; gap: 6px; text-align: center; }
+.lyrics .line { font-family: var(--f-display); font-size: clamp(22px, 5vw, 34px); line-height: 1.25; color: rgba(245,234,243,.38); }
+.syl { display: inline-block; transition: color .15s ease, transform .15s ease; }
+.syl.sung { color: var(--text); }
+.syl.now { color: var(--gold); transform: translateY(-3px) scale(1.08); }
+.controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.btn {
+  font: 600 15px/1 var(--f-body);
+  padding: 13px 20px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--gold); background: transparent; color: var(--text);
+  transition: background .2s ease, color .2s ease;
+}
+.btn:hover { background: rgba(233,185,95,.12); }
+.btn.primary { background: var(--gold); color: var(--velvet); }
+.btn.primary:hover { background: var(--gold-soft); }
+.keys {
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
+  max-width: 560px; width: 100%; margin: 0 auto;
+}
+.key {
+  height: clamp(110px, 26vw, 170px);
+  background: var(--key); border: 0; border-radius: 0 0 10px 10px;
+  box-shadow: inset 0 -8px 0 var(--key-edge), 0 6px 14px rgba(0,0,0,.3);
+  cursor: pointer; color: var(--ink);
+  display: flex; align-items: flex-end; justify-content: center; padding-bottom: 16px;
+  font-family: var(--f-mono); font-size: 12px;
+  transition: transform .08s ease, background .15s ease, box-shadow .15s ease;
+}
+.key.next { background: #fbeccb; box-shadow: inset 0 -8px 0 var(--gold), 0 0 22px rgba(233,185,95,.55); }
+.key.hit { transform: translateY(3px); background: var(--gold-soft); box-shadow: inset 0 -3px 0 var(--gold), 0 2px 6px rgba(0,0,0,.3); }
+.solo-note { text-align: center; color: var(--muted); font-size: 14px; margin: 0; min-height: 1.6em; }
+
+/* ---------- Footer ---------- */
+.foot { text-align: center; display: grid; gap: 14px; justify-items: center; }
+.foot p { margin: 0; font-family: var(--f-hand); font-size: 34px; line-height: 1.1; color: var(--gold-soft); }
+.linkish { background: none; border: 0; color: var(--muted); font: 500 13px var(--f-mono); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; width: 100%; height: 100%; }
+
+@media (max-width: 420px) {
+  .letter p { font-size: 25px; }
+  .keys { gap: 3px; }
+  .key { font-size: 10px; padding-bottom: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation: none !important; }
+}
+body{margin:0} img{max-width:100%} [hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage" role="dialog" aria-label="A letter for you">
+  <p class="stage-kicker">Special delivery all the way from Philippines</p>
+  <div class="env" id="env">
+    <div class="env-back"></div>
+    <div class="env-letter" aria-hidden="true"><span>Happy birthday ♪</span></div>
+    <div class="env-front"></div>
+    <div class="env-to" aria-hidden="true">For Choni, with love</div>
+    <div class="env-flap"></div>
+    <button class="seal" id="seal" aria-label="Break the seal and open the letter">♪</button>
+  </div>
+  <p class="stage-hint">Tap the seal to open. Turn your sound on.</p>
+</div>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<main class="wrap" id="main">
+  <header class="hero">
+    <p class="eyebrow">October 16</p>
+    <div class="staff"><h1 id="top" tabindex="-1">Happy birthday, <em id="nameHero">Choni!</em>.</h1></div>
+    <p class="sub">Keep blooming wherever your're planted</p>
+    <ul class="program">
+      <li><a href="#letter">Letter</a></li>
+      <li><a href="#setlist">Setlist</a></li>
+      <li><a href="#encore">Encore</a></li>
+      <li><a href="#solo">Your solo</a></li>
+    </ul>
+  </header>
+
+  <section id="letter" aria-label="The letter">
+    <article class="letter">
+      <div class="stamp" aria-hidden="true">♪</div>
+      <h3>My Dearest <span class="name-slot">Choni</span>,</h3>
+      <div class="body">
+        <p>Happy birthday darling! Tell me how does time fly by this fast? It literally feels like only yesterday we were walking to shop together after discovering we were neighbours, haha. Who knew that would turn into this? We’ve shared so much of our lives since then: the ups, the downs, and every single phase in between (ifykyk;).</p>
+        <p>I love listening to your songs. Your singing soothes my soul in a way nothing else does, and I really miss hearing it live. Please never stop.</p>
+        <p>To my ML pro, wherever life takes you, I’m always here. Just a text or a call away, any time, for anything. Always. Just know that.</p>
+        <p>I don't have a sister by blood heh, but if I had a younger one, she’d be exactly like you. Thank you for being that for me.</p>
+      </div>
+      <p class="sign">Love always,<br>Ashim Ngawangg</p>
+    </article>
+  </section>
+
+  <section id="setlist">
+    <div class="sec-head">
+      <p class="eyebrow">Memory Gallery</p>
+      <h2>Daily dose of choni's beautiful face</h2>
+      <p>More pictures next time</p>
+    </div>
+    <ol class="setlist" id="photos"></ol>
+  </section>
+
+  <section id="encore">
+    <div class="sec-head">
+      <p class="eyebrow">Encore</p>
+      <h2>Press play</h2>
+      <p>A face I could literally swear that I could spend my whole life knowing</p>
+    </div>
+    <div class="encore" id="videos"></div>
+  </section>
+
+  <section id="solo" class="solo">
+    <div class="sec-head">
+      <p class="eyebrow">Your solo</p>
+      <h2>The stage is yours</h2>
+      <p class="marking">In C major · 3/4 · ♩ = 120</p>
+    </div>
+    <div class="lyrics" id="lyrics" aria-live="polite"></div>
+    <div class="controls">
+      <button class="btn primary" id="singAlong">Sing along</button>
+      <button class="btn" id="playYourself">Play it yourself</button>
+    </div>
+    <div class="keys" id="keys" role="group" aria-label="Piano keys"></div>
+    <p class="solo-note" id="soloNote">Tap "Sing along" and sing with the gold words, or play the melody on the keys.</p>
+  </section>
+
+  <footer class="foot">
+    <p>Here's to another year of encores.</p>
+    <button class="linkish" id="reseal">Seal the letter again</button>
+  </footer>
+</main>
+
+<script>
+/* ===== Edit these to personalize ===== */
+const NAME = "Choni";                 // shown in the title, letter and song
+const SONG_NAME = ["cho", "ni"];  // the name as sung: two syllables fit the melody best
+
+const PHOTOS = [
+  // { src: "photo.jpg", caption: "Our first road-trip singalong", when: "2016" },
+  { src: "photo1.jpg", caption: "Core Memory", when: "Choni" },
+  { src: "photo2.jpg", caption: "Fav Photo of You", when: "Choni" },
+  { src: "photo3.jpg", caption: "TRA days", when: "Choni?" },
+  { src: "photo4.jpg", caption: "Convos, anywhere", when: "Choni & Ashim Ngawang" },
+  { src: "photo5.jpg", caption: "Love love", when: "Choni & Ashim Ngawang" },
+  { src: "photo6.jpg", caption: "911", when: "Choni & Ashim Ngawang" }
+];
+const VIDEOS = [
+  { src: "video1.mp4", title: "More videos soon", note: "Volume up for this one." }
+];
+/* ===================================== */
+
+const $ = s => document.querySelector(s);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+document.querySelectorAll(".name-slot").forEach(n => n.textContent = NAME);
+$("#nameHero").textContent = NAME;
+
+/* ---------- Photos ---------- */
+$("#photos").innerHTML = PHOTOS.map((p, i) => `
+  <li class="polaroid">
+    <div class="ph"><div class="empty"><b>${String(i + 1).padStart(2, "0")}</b>Photo goes here</div>${p.src ? `<img src="${p.src}" alt="${p.caption}" onerror="this.remove()">` : ""}</div>
+    <div class="track"><span>Track ${String(i + 1).padStart(2, "0")}</span><span>${p.when}</span></div>
+    <p class="cap">${p.caption}</p>
+  </li>`).join("");
+
+/* ---------- Videos ---------- */
+$("#videos").innerHTML = VIDEOS.map(v => `
+  <div class="vid">
+    <div class="vid-frame"><div class="empty"><span class="play-glyph"></span>Video goes here</div>${v.src ? `<video src="${v.src}" controls playsinline preload="metadata" onerror="this.remove()"></video>` : ""}</div>
+    <h3>${v.title}</h3>
+    <p>${v.note}</p>
+  </div>`).join("");
+
+/* ---------- Audio ---------- */
+let ctx, master;
+function ac() {
+  if (!ctx) {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = 0.32; master.connect(ctx.destination);
+  }
+  if (ctx.state === "suspended") ctx.resume();
+  return ctx;
+}
+function tone(freq, when = 0, len = 0.6) {
+  try {
+    const c = ac(), t = c.currentTime + when;
+    const g = c.createGain(), o = c.createOscillator(), o2 = c.createOscillator(), g2 = c.createGain();
+    o.type = "sine"; o2.type = "triangle";
+    o.frequency.value = freq; o2.frequency.value = freq * 2;
+    g2.gain.value = 0.12;
+    o.connect(g); o2.connect(g2).connect(g); g.connect(master);
+    const tail = Math.max(0.7, len * 1.5);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.6, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + tail);
+    o.start(t); o2.start(t); o.stop(t + tail + 0.05); o2.stop(t + tail + 0.05);
+  } catch (e) {}
+}
+const HZ = { G4: 392.0, A4: 440.0, B4: 493.88, C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99 };
+const KEY_ORDER = ["G4","A4","B4","C5","D5","E5","F5","G5"];
+
+/* ---------- Song: Happy Birthday (traditional, public domain) ---------- */
+const SONG = [
+  [["G4",.75,"Hap-"],["G4",.25,"py"],["A4",1,"birth-"],["G4",1,"day"],["C5",1,"to"],["B4",2,"you"]],
+  [["G4",.75,"Hap-"],["G4",.25,"py"],["A4",1,"birth-"],["G4",1,"day"],["D5",1,"to"],["C5",2,"you"]],
+  [["G4",.75,"Hap-"],["G4",.25,"py"],["G5",1,"birth-"],["E5",1,"day"],["C5",1,"dear"],["B4",1,SONG_NAME[0] + (SONG_NAME[1] ? "-" : "")],["A4",2,SONG_NAME[1] || ""]],
+  [["F5",.75,"Hap-"],["F5",.25,"py"],["E5",1,"birth-"],["C5",1,"day"],["D5",1,"to"],["C5",3,"you!"]]
+];
+const NOTES = [];
+$("#lyrics").innerHTML = SONG.map((line, li) =>
+  `<div class="line">${line.map(([n, b, s]) => {
+    const i = NOTES.push({ n, b, li }) - 1;
+    return `<span class="syl" data-i="${i}">${s || "&nbsp;"}</span>`;
+  }).join(" ")}</div>`).join("");
+const syls = [...document.querySelectorAll(".syl")];
+
+$("#keys").innerHTML = KEY_ORDER.map(k => `<button class="key" data-k="${k}" aria-label="${k[0]} key">${k[0]}</button>`).join("");
+const keyEl = k => document.querySelector(`.key[data-k="${k}"]`);
+
+function lightKey(k) {
+  const el = keyEl(k); if (!el) return;
+  el.classList.add("hit"); setTimeout(() => el.classList.remove("hit"), 220);
+}
+function markSyl(i) {
+  syls.forEach((s, j) => { s.classList.toggle("now", j === i); s.classList.toggle("sung", j < i); });
+}
+function clearSyls() { syls.forEach(s => s.classList.remove("now", "sung")); }
+function setNext(i) {
+  document.querySelectorAll(".key.next").forEach(k => k.classList.remove("next"));
+  if (i != null && NOTES[i]) keyEl(NOTES[i].n)?.classList.add("next");
+}
+
+let mode = "free", step = 0, timers = [];
+function stopAll() { timers.forEach(clearTimeout); timers = []; }
+
+$("#singAlong").addEventListener("click", () => {
+  stopAll(); mode = "auto"; setNext(null); clearSyls();
+  $("#soloNote").textContent = "Sing the gold words. Everyone's listening.";
+  const beat = 0.5; let t = 0.15;
+  NOTES.forEach((nt, i) => {
+    timers.push(setTimeout(() => { tone(HZ[nt.n], 0, nt.b * beat); lightKey(nt.n); markSyl(i); }, t * 1000));
+    t += nt.b * beat;
+  });
+  timers.push(setTimeout(() => { markSyl(NOTES.length); finale(); mode = "free"; }, t * 1000 + 300));
+});
+
+$("#playYourself").addEventListener("click", () => {
+  stopAll(); mode = "guided"; step = 0; clearSyls(); setNext(0);
+  $("#soloNote").textContent = "Tap the glowing key. Any key works if you miss.";
+});
+
+$("#keys").addEventListener("pointerdown", e => {
+  const btn = e.target.closest(".key"); if (!btn) return;
+  e.preventDefault();
+  if (mode === "guided") {
+    const nt = NOTES[step];
+    tone(HZ[nt.n], 0, nt.b * 0.5); lightKey(nt.n); markSyl(step);
+    step++;
+    if (step >= NOTES.length) {
+      setNext(null); mode = "free";
+      setTimeout(() => { markSyl(NOTES.length); finale(); }, 500);
+      $("#soloNote").textContent = "Standing ovation. You played the whole thing.";
+    } else setNext(step);
+  } else if (mode === "free") {
+    tone(HZ[btn.dataset.k], 0, 0.6); lightKey(btn.dataset.k);
+  }
+});
+$("#keys").addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.closest(".key")) {
+    e.preventDefault();
+    e.target.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+  }
+});
+
+/* ---------- Confetti ---------- */
+const cv = $("#confetti"), cx = cv.getContext("2d");
+function finale() {
+  if (mode !== "guided") $("#soloNote").textContent = "Standing ovation. Happy birthday!";
+  [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, i * 0.09, 1.2));
+  if (reduce) return;
+  const dpr = devicePixelRatio || 1;
+  cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const cols = ["#e9b95f", "#f3d79d", "#a8273f", "#fdf3ef", "#c6384f"];
+  const ps = Array.from({ length: 140 }, () => ({
+    x: innerWidth / 2 + (Math.random() - .5) * 200, y: innerHeight * .55,
+    vx: (Math.random() - .5) * 12, vy: -Math.random() * 14 - 6,
+    r: Math.random() * 6 + 3, a: Math.random() * 6, va: (Math.random() - .5) * .3,
+    c: cols[Math.floor(Math.random() * cols.length)], note: Math.random() < .18
+  }));
+  const end = performance.now() + 3200;
+  (function frame(now) {
+    cx.clearRect(0, 0, innerWidth, innerHeight);
+    ps.forEach(p => {
+      p.vy += .32; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va;
+      cx.save(); cx.translate(p.x, p.y); cx.rotate(p.a); cx.fillStyle = p.c;
+      if (p.note) { cx.font = "20px Gloock, serif"; cx.fillText("♪", -6, 6); }
+      else cx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2);
+      cx.restore();
+    });
+    if (now < end) requestAnimationFrame(frame); else cx.clearRect(0, 0, innerWidth, innerHeight);
+  })(performance.now());
+}
+
+/* ---------- Envelope ---------- */
+const stage = $("#stage"), env = $("#env");
+document.body.classList.add("locked");
+let opened = false;
+function openLetter() {
+  if (opened) return; opened = true;
+  env.classList.add("open");
+  [392, 523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, 0.25 + i * 0.12, 1.4));
+  const wait = reduce ? 300 : 1900;
+  setTimeout(() => {
+    stage.classList.add("fade");
+    document.body.classList.remove("locked");
+    window.scrollTo(0, 0);
+    setTimeout(() => { stage.hidden = true; $("#top").focus({ preventScroll: true }); }, reduce ? 50 : 800);
+  }, wait);
+}
+env.addEventListener("click", openLetter);
+$("#reseal").addEventListener("click", () => {
+  opened = false; env.classList.remove("open");
+  stage.hidden = false; stage.classList.remove("fade");
+  document.body.classList.add("locked");
+  $("#seal").focus();
+});
+</script>
+</body>
+</html>
